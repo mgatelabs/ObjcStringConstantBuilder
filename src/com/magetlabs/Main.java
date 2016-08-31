@@ -70,8 +70,8 @@ public class Main {
     public static String readFile(File file) {
         try {
             byte[] bytes = Files.readAllBytes(file.toPath());
-            return new String(bytes,"UTF-8");
-        } catch (FileNotFoundException e) {
+            return new String(bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

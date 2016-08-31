@@ -1,4 +1,4 @@
-package com.magetlabs;
+package com.mgatelabs;
 
 import java.io.*;
 import java.nio.file.Files;

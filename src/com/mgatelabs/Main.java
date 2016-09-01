@@ -2,6 +2,9 @@ package com.mgatelabs;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +43,8 @@ public class Main {
             source.append("#import \"").append(front).append("StringConstants.h").append("\"\n");
             source.append("\n");
 
+            SortedMap<String, String> values = new TreeMap<>();
+
             for (String split: splits) {
                 if (split.length() < 3 || split.startsWith("#")) {
                     continue;
@@ -49,12 +54,20 @@ public class Main {
                     String attr = lines[0];
                     String value = lines[1];
 
-                    String valueConstant = "_" + front.toUpperCase() + "_" + attr.toUpperCase();
-
-                    header.append("extern NSString *const ").append(valueConstant).append(";\n");
-
-                    source.append("NSString *const ").append(valueConstant).append(" = @\"").append(value).append("\";\n");
+                    values.put(attr, value);
                 }
+            }
+
+            for (Map.Entry<String, String> entry: values.entrySet()) {
+
+                String attr = entry.getKey();
+                String value = entry.getValue();
+
+                String valueConstant = "_" + front.toUpperCase() + "_" + attr.toUpperCase();
+
+                header.append("extern NSString *const ").append(valueConstant).append(";\n");
+
+                source.append("NSString *const ").append(valueConstant).append(" = @\"").append(value).append("\";\n");
             }
 
             File hFile = new File(dir, front + "StringConstants.h");
